@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #fdecd6;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+                align-items: flex-start;
+                padding-top: 20px;
+            }
+
+            .container {
+                padding: 25px;
+                border-radius: 15px;
+            }
+
+            h1 {
+                font-size: 24px !important;
+            }
+
+            input, select, textarea {
+                font-size: 16px !important;
+            }
+
+            label {
+                font-size: 13px !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 22px !important;
+                margin-bottom: 20px !important;
+            }
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 28px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            color: #555;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            background: white;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        select[multiple] {
+            height: 120px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            resize: vertical;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .preview-section {
+            margin-top: 30px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border: 2px dashed #667eea;
+        }
+
+        .preview-title {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .preview-dimensions {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Caption Generator 🖼️</h1>
+        
+        <div class="form-group">
+            <label for="title">Title, (year)</label>
+            <input type="text" id="title" placeholder="Enter title">
+        </div>
+
+        <div class="form-group">
+            <label for="width">Width by Height (cm) e.g, 10 by 10 cm</label>
+            <input type="text" id="width" placeholder="e.g., 10 by 10">
+        </div>
+
+        <div class="form-group">
+            <label for="medium">Medium</label>
+            <select id="medium">
+                <option value="">Select medium</option>
+                <option value="Acrylic">Acrylic</option>
+                <option value="Acrylic on canvas">Acrylic on canvas</option>
+                <option value="Acrylic on paper">Acrylic on paper</option>
+                <option value="Oil">Oil</option>
+                <option value="Oil on canvas">Oil on canvas</option>
+                <option value="Oil on paper">Oil on paper</option>
+                <option value="Gouache">Gouache</option>
+                <option value="Gouache on canvas">Gouache on canvas</option>
+                <option value="Gouache on paper">Gouache on paper</option>
+                <option value="———" disabled>———</option>
+                <option value="Digital">Digital</option>
+                <option value="———" disabled>———</option>
+                <option value="Drawing">Drawing</option>
+                <option value="Graphite">Graphite</option>
+                <option value="Graphite on paper">Graphite on paper</option>
+                <option value="Ink">Ink</option>
+                <option value="Colour pencils">Colour pencils</option>
+                <option value="Colour pencils on paper">Colour pencils on paper</option>
+                <option value="———" disabled>———</option>
+                <option value="Watercolour">Watercolour</option>
+                <option value="Mixed media">Mixed media</option>
+                <option value="Mixed media on canvas">Mixed media on canvas</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description <span id="wordCount">(0/350 words)</span></label>
+            <textarea id="description" placeholder="Enter description (max 350 words)" rows="6"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="tags">Generate tags</label>
+            <select id="tags" multiple>
+                <option value="" disabled>1. Location (choose 2):</option>
+                <option value="#Sydneyartist">#Sydneyartist</option>
+                <option value="#AustralianArt">#AustralianArt</option>
+                <option value="#localartscene">#localartscene</option>
+                <option value="#localartsydney">#localartsydney</option>
+                <option value="" disabled>───────</option>
+                <option value="" disabled>2a. Genre (choose 2):</option>
+                <option value="#contemporarypainting">#contemporarypainting</option>
+                <option value="#landscapepainting">#landscapepainting</option>
+                <option value="#portraitpainting">#portraitpainting</option>
+                <option value="#abstractart">#abstractart</option>
+                <option value="#modernart">#modernart</option>
+                <option value="#digitalart">#digitalart</option>
+                <option value="#digitalartwork">#digitalartwork</option>
+                <option value="#figurative">#figurative</option>
+                <option value="#stilllifeart">#stilllifeart</option>
+                <option value="#realism">#realism</option>
+                <option value="#modernrealism">#modernrealism</option>
+                <option value="#postmodernart">#postmodernart</option>
+                <option value="" disabled>───────</option>
+                <option value="" disabled>2b. Medium:</option>
+                <option value="#oilpainting">#oilpainting</option>
+                <option value="#acrylicpainting">#acrylicpainting</option>
+                <option value="#digitalpainting">#digitalpainting</option>
+                <option value="#drawingart">#drawingart</option>
+                <option value="#inkart">#inkart</option>
+                <option value="#mixedmedia">#mixedmedia</option>
+                <option value="" disabled>───────</option>
+                <option value="" disabled>3. Collector/promote (choose 2):</option>
+                <option value="#artcollector">#artcollector</option>
+                <option value="#artforsale">#artforsale</option>
+                <option value="#artiststowatch">#artiststowatch</option>
+                <option value="#galleryart">#galleryart</option>
+                <option value="#artdealer">#artdealer</option>
+                <option value="#artmarket">#artmarket</option>
+                <option value="#artbasel">#artbasel</option>
+                <option value="#artexhibition">#artexhibition</option>
+                <option value="" disabled>───────</option>
+                <option value="#upcomingartist">#upcomingartist</option>
+                <option value="#originalart">#originalart</option>
+                <option value="#emergingartist">#emergingartist</option>
+                <option value="#emergingart">#emergingart</option>
+                <option value="#artemerging">#artemerging</option>
+                <option value="#internationalartist">#internationalartist</option>
+                <option value="" disabled>───────</option>
+                <option value="" disabled>Trend (choose 1):</option>
+                <option value="#dailyart">#dailyart</option>
+                <option value="#artsketch">#artsketch</option>
+                <option value="#artisthour">#artisthour</option>
+                <option value="#artinhabit">#artinhabit</option>
+                <option value="#abstractartdaily">#abstractartdaily</option>
+                <option value="#artchallenge">#artchallenge</option>
+                <option value="#processvideo">#processvideo</option>
+                <option value="" disabled>───────</option>
+                <option value="" disabled>Niche (choose 1):</option>
+                <option value="#artcommunity">#artcommunity</option>
+                <option value="#localartists">#localartists</option>
+                <option value="#artstudio">#artstudio</option>
+                <option value="#artworkshop">#artworkshop</option>
+            </select>
+            <small style="color: #666; display: block; margin-top: 5px;">Hold Ctrl (or Cmd on Mac) to select multiple tags</small>
+        </div>
+
+        <button class="btn" onclick="generatePreview()">Generate Preview</button>
+
+        <div class="preview-section" id="preview" style="display: none;">
+            <div class="preview-title" id="previewTitle"></div>
+            <div class="preview-dimensions">
+                <div id="widthLine"></div>
+                <div><span id="previewMedium"></span></div>
+                <div style="margin-top: 15px;"><span id="previewDescription"></span></div>
+                <div style="margin-top: 15px;"><span id="previewTags"></span></div>
+            </div>
+            <button class="btn" onclick="copyPreview()" style="margin-top: 20px;">Copy Preview</button>
+        </div>
+    </div>
+
+    <script>
+        const descriptionField = document.getElementById('description');
+        const wordCountDisplay = document.getElementById('wordCount');
+
+        descriptionField.addEventListener('input', function() {
+            const text = this.value.trim();
+            const words = text ? text.split(/\s+/) : [];
+            const wordCount = words.length;
+
+            wordCountDisplay.textContent = `(${wordCount}/350 words)`;
+
+            if (wordCount > 350) {
+                wordCountDisplay.style.color = 'red';
+            } else {
+                wordCountDisplay.style.color = '#666';
+            }
+        });
+
+        function generatePreview() {
+            const title = document.getElementById('title').value;
+            const width = document.getElementById('width').value;
+            const medium = document.getElementById('medium').value;
+            const description = document.getElementById('description').value;
+            
+            const tagsSelect = document.getElementById('tags');
+            const selectedTags = Array.from(tagsSelect.selectedOptions).map(option => option.value);
+
+            document.getElementById('previewTitle').textContent = title;
+            
+            const widthLine = document.getElementById('widthLine');
+            if (width) {
+                widthLine.textContent = width + ' cm';
+                widthLine.style.display = 'block';
+            } else {
+                widthLine.textContent = '';
+                widthLine.style.display = 'none';
+            }
+            
+            document.getElementById('previewMedium').textContent = medium;
+            document.getElementById('previewDescription').textContent = description;
+            document.getElementById('previewTags').textContent = selectedTags.join(', ');
+
+            document.getElementById('preview').style.display = 'block';
+        }
+
+        function copyPreview() {
+            const title = document.getElementById('previewTitle').textContent;
+            const widthLine = document.getElementById('widthLine').textContent;
+            const medium = document.getElementById('previewMedium').textContent;
+            const description = document.getElementById('previewDescription').textContent;
+            const tags = document.getElementById('previewTags').textContent;
+
+            const previewText = `${title}\n${widthLine}\n${medium}\n\n${description}\n\n${tags}`;
+
+            navigator.clipboard.writeText(previewText).then(() => {
+                alert('Preview copied to clipboard!');
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+            });
+        }
+    </script>
+</body>
+</html>
